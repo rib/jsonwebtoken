@@ -92,12 +92,12 @@ impl StdError for Error {
             ErrorKind::Base64(ref err) => err.description(),
             ErrorKind::Json(ref err) => err.description(),
             ErrorKind::Utf8(ref err) => err.description(),
-            ErrorKind::Crypto(ref err) => err.description(),
+            ErrorKind::Crypto(ref _err) => "Crypto error",
             _ => unreachable!(),
         }
     }
 
-    fn cause(&self) -> Option<&StdError> {
+    fn cause(&self) -> Option<&dyn StdError> {
         match *self.0 {
             ErrorKind::InvalidToken => None,
             ErrorKind::InvalidSignature => None,
@@ -112,7 +112,7 @@ impl StdError for Error {
             ErrorKind::Base64(ref err) => Some(err),
             ErrorKind::Json(ref err) => Some(err),
             ErrorKind::Utf8(ref err) => Some(err),
-            ErrorKind::Crypto(ref err) => Some(err),
+            ErrorKind::Crypto(ref _err) => None,
             _ => unreachable!(),
         }
     }
